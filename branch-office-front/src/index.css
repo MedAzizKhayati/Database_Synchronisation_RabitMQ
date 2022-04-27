@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #242728;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.product-sales{
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  height: 100vh;
+  font-size: x-large;
+}
+
+.product-sales h1{
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+
+.product-sales table{
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+.product-sales td {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  border-bottom: 1px solid #eaeaea;
+  text-align: center;
+}
+
+.sale-form td {
+  padding-right: 1rem;
+  border-bottom: none;
+}
+
+.sale-form input {
+  border: none;
+  color: #242728;
+  outline: none;
+  background-color: #eaeaea;
+  border-radius: 5px;
+  height: 35px;
+}
+
+button {
+  border: none;
+  border-radius: 5px;
+  background-color: #242728;
+  color: white;
+  padding: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover{
+  background-color: #41444d;
+}
