@@ -74,7 +74,7 @@ export class ProductSalesService {
     return this.productSaleModel.findById(id).exec();
   }
 
-  update(id: string, updateProductSaleDto: UpdateProductSaleDto) {
+  update(id: string, updateProductSaleDto: UpdateProductSaleDto) {    
     return this.productSaleModel
       .findByIdAndUpdate(id, { ...updateProductSaleDto, synchronized: false }, { new: true })
       .exec();

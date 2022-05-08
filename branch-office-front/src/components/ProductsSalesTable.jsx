@@ -29,6 +29,7 @@ const ProductSalesTable = () => {
     };
 
     const handleSave = (e) => {
+        delete productSale._id;
         for (let key in productSale) {
             if (!productSale[key]) {
                 alert(`${key} is required`);
@@ -64,6 +65,10 @@ const ProductSalesTable = () => {
 
     const synchronizeAll = async () => {
         await synchronizeAllSales();
+        productSales.forEach(productSale => {
+            !productSale.synchronized && 
+            alterProductSale({ ...productSale, isLoading: true });
+        })
         setTimeout(async () => {
             getAllProductSales()
                 .then(setProductSales)
@@ -74,9 +79,10 @@ const ProductSalesTable = () => {
     const editMode = (sale) => {
         setIsEditing(true);
         for (let key in productSale) {
-            productSale[key] = sale[key];
+            productSale[key] = sale[key] || productSale[key];
         }
         productSale._id = sale._id;
+        console.log(productSale);
         setProductSale({...productSale});
     }
 

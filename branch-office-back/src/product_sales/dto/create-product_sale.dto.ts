@@ -6,5 +6,5 @@ export class CreateProductSaleDto {
     cost: number;
     amount: number;
     tax: number;
-    total: number;
+    total: any;
 }
