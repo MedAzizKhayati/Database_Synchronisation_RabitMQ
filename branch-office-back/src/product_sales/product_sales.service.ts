@@ -8,26 +8,61 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class ProductSalesService {
+  private connected = false;
   constructor(
     @InjectModel(ProductSale.name) private productSaleModel: Model<ProductSaleDocument>,
     @Inject('PRODUCT_SALES_SERVICE') private readonly client: ClientProxy,
   ) { }
-  
+
   async onApplicationBootstrap() {
-    await this.client.connect();
+    try {
+      await this.client.connect();
+      this.connected = true;
+    } catch (error) {
+      console.error('Cannot connect to queue');
+    }
   }
 
-  async create(createProductSaleDto: CreateProductSaleDto) {
-    const createdProductSale = new this.productSaleModel(createProductSaleDto);
-    const productSale = await createdProductSale.save();
+  async synchronizeById(id: string) {
+    const productSale = await this.productSaleModel.findById(id).exec();
+    if (!productSale || productSale.synchronized) return { synchronized: false };
+    try {
+      await this.synchronize_(productSale);
+    } catch (error) {
+
+    }
+    return { synchronized: true };
+  }
+
+  async synchronize() {
+    const productSales = await this.productSaleModel.find({ syncrhonized: false || undefined }).exec();
+    productSales.forEach(async (productSale) => {
+      try {
+        await this.synchronize_(productSale);
+      } catch (error) {
+
+      }
+    })
+    return { synchronized: productSales.length };
+  }
+  async synchronize_(productSale: any) {
+    if (!this.connected) await this.client.connect();
+    this.connected = true;
     this.client.emit('product_sales', {
       branchOffice: process.env.DATABASE_NAME,
-      ...createProductSaleDto
+      ...productSale._doc,
+      id: productSale._id,
     }).subscribe(
-      () => {
+      async () => {
+        productSale.synchronized = true;
+        await productSale.save();
         console.log('ProductSale sent to queue', process.env.DATABASE_NAME);
       }
     );
+  }
+  async create(createProductSaleDto: CreateProductSaleDto) {
+    const createdProductSale = new this.productSaleModel(createProductSaleDto);
+    const productSale = await createdProductSale.save();
     return productSale;
   }
 
@@ -35,16 +70,18 @@ export class ProductSalesService {
     return this.productSaleModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} productSale`;
+  findOne(id: string) {
+    return this.productSaleModel.findById(id).exec();
   }
 
-  update(id: number, updateProductSaleDto: UpdateProductSaleDto) {
-    return `This action updates a #${id} productSale`;
+  update(id: string, updateProductSaleDto: UpdateProductSaleDto) {
+    return this.productSaleModel
+      .findByIdAndUpdate(id, { ...updateProductSaleDto, synchronized: false }, { new: true })
+      .exec();
   }
 
-  remove(id?: number) {
-    if(!id)
+  remove(id?: string) {
+    if (!id)
       return this.productSaleModel.deleteMany({}).exec();
     return this.productSaleModel.findByIdAndRemove(id).exec();
   }

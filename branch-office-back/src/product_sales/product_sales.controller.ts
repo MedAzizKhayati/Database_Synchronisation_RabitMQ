@@ -17,18 +17,29 @@ export class ProductSalesController {
     return this.productSalesService.findAll();
   }
 
+  @Patch('synchronize')
+  synchronize(){
+    return this.productSalesService.synchronize();
+  }
+  @Patch('synchronize/:id')
+  synchronizeById(
+    @Param('id') id: string,
+  ){
+    return this.productSalesService.synchronizeById(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productSalesService.findOne(+id);
+    return this.productSalesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductSaleDto: UpdateProductSaleDto) {
-    return this.productSalesService.update(+id, updateProductSaleDto);
+    return this.productSalesService.update(id, updateProductSaleDto);
   }
 
   @Delete(':id?')
   remove(@Param('id') id: string) {
-    return this.productSalesService.remove(+id);
+    return this.productSalesService.remove(id);
   }
 }

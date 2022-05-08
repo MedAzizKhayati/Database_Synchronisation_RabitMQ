@@ -19,25 +19,24 @@ export class ProductSalesController {
   }
 
   @EventPattern('product_sales')
-  onMessage(
-    @Payload() createProductSaleDto: CreateProductSaleDto,
+  synchronize(
+    @Payload() updateProductSaleDto: UpdateProductSaleDto,
   ) {
-    console.log("onMessage", createProductSaleDto);
-    this.productSalesService.create(createProductSaleDto);
+    this.productSalesService.syncrhonize(updateProductSaleDto);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productSalesService.findOne(+id);
+    return this.productSalesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductSaleDto: UpdateProductSaleDto) {
-    return this.productSalesService.update(+id, updateProductSaleDto);
+    return this.productSalesService.update(id, updateProductSaleDto);
   }
 
   @Delete(':id?')
   remove(@Param('id') id: string) {
-    return this.productSalesService.remove(+id);
+    return this.productSalesService.remove(id);
   }
 }

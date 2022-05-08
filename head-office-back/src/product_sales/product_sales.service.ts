@@ -10,9 +10,18 @@ export class ProductSalesService {
   constructor(
     @InjectRepository(ProductSale)
     private readonly productSaleRepository: Repository<ProductSale>,
-  ) {}
+  ) { }
 
-  create(createProductSaleDto: CreateProductSaleDto) {
+  async syncrhonize(updateProductSaleDto: UpdateProductSaleDto) {
+    const sale = await this.productSaleRepository.findOne({
+      id: updateProductSaleDto.id,
+      branchOffice: updateProductSaleDto.branchOffice
+    });
+    if (sale) return this.update(sale.id, updateProductSaleDto);
+    return this.create(updateProductSaleDto);
+  }
+
+  create(createProductSaleDto: UpdateProductSaleDto) {
     const productSale = this.productSaleRepository.create(createProductSaleDto);
     return this.productSaleRepository.save(productSale);
   }
@@ -21,16 +30,16 @@ export class ProductSalesService {
     return this.productSaleRepository.find();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} productSale`;
   }
 
-  update(id: number, updateProductSaleDto: UpdateProductSaleDto) {
+  update(id: string, updateProductSaleDto: UpdateProductSaleDto) {
     return `This action updates a #${id} productSale`;
   }
 
-  remove(id?: number) {
-    if(!id)
+  remove(id?: string) {
+    if (!id)
       return this.productSaleRepository.delete({});
     return this.productSaleRepository.delete(id);
   }

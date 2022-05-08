@@ -28,6 +28,13 @@ export class ProductSale {
 
     @Prop()
     total: number;
+
+    @Prop(
+        {
+            default: false,
+        }
+    )
+    synchronized: boolean;
 }
 
 export const ProductSaleSchema = SchemaFactory.createForClass(ProductSale);

@@ -19,7 +19,7 @@ code {
   flex-direction: column;
   align-items: center; 
   height: 100vh;
-  font-size: x-large;
+  font-size: large;
 }
 
 .product-sales h1{
@@ -70,4 +70,45 @@ button {
 
 button:hover{
   background-color: #41444d;
+}
+
+.synchronized {
+  background-color: green;
+  padding: 5px;
+  font-size: large;
+  border-radius: 7px;
+}
+
+.not-synchronized {
+  background-color: gray;
+  padding: 7px;
+  font-size: large;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.not-synchronized:hover {
+  background-color: #41444d;
+}
+
+.loading {
+  background-color: gray;
+  width: 500px;
+  padding: 7px;
+  font-size: large;
+  border-radius: 5px;
+  animation: loading 1s linear 0.5s infinite alternate;
+}
+
+@keyframes loading {
+  25%  {
+    opacity: 75%;
+  }
+  50%  {
+    opacity: 50%;
+  }
+  100% {
+    opacity: 25%;
+  }
 }

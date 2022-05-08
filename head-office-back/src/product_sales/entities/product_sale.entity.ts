@@ -1,9 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class ProductSale {
-    @PrimaryGeneratedColumn('uuid')
-    id: number;
+    @PrimaryColumn()
+    id: string;
 
     @Column()
     date: Date;
@@ -28,7 +28,7 @@ export class ProductSale {
 
     @Column()
     total: number;
-
-    @Column()
+    
+    @PrimaryColumn()
     branchOffice: string;
 }
